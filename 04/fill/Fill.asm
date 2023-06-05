@@ -12,3 +12,66 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+  @24575
+  D=A
+  @max_screen
+  M=D
+  @color
+  M=0
+(LOOP)
+  @KBD
+  D=M
+  // if D == 0 go to white
+  @WHITE
+  D;JEQ
+  // else go to black
+  @BLACK
+  0;JMP
+
+(WHITE)
+  // n is a pointer
+  // reset n
+  @n
+  M=0
+  (WLOOP)
+    // move to correct address
+    @n
+    D=M
+    @SCREEN
+    A=D+M
+    // set to white
+    M=-1
+    // increment n
+    @n
+    M=M+1
+    // repeat?
+    D=M
+    @max_screen
+    D=M-D
+    @WLOOP
+    D;JLT
+    @LOOP
+    0;JMP
+
+(BLACK)
+  @n
+  M=0
+  (BLOOP)
+    // select address
+    @n
+    D=M
+    @SCREEN
+    A=D+M
+    // set to black
+    M=0
+    // increment n 
+    @n 
+    M=M+1
+    // repeat?
+    D=M
+    @max_screen
+    D=M-D
+    @BLOOP
+    D;JLT
+    @LOOP
+    0;JMP
