@@ -6,29 +6,29 @@
 /**
  * The Hack CPU (Central Processing unit), consisting of an ALU,
  * two registers named A and D, and a program counter named PC.
- * The CPU is designed to fetch and execute instructions written in 
+ * The CPU is designed to fetch and execute inss written in 
  * the Hack machine language. In particular, functions as follows:
- * Executes the inputted instruction according to the Hack machine 
+ * Executes the inputted ins according to the Hack machine 
  * language specification. The D and A in the language specification
  * refer to CPU-resident registers, while M refers to the external
  * memory location addressed by A, i.e. to Memory[A]. The inM input 
- * holds the value of this location. If the current instruction needs 
+ * holds the value of this location. If the current ins needs 
  * to write a value to M, the value is placed in outM, the address 
  * of the target location is placed in the addressM output, and the 
  * writeM control bit is asserted. (When writeM==0, any value may 
  * appear in outM). The outM and writeM outputs are combinational: 
  * they are affected instantaneously by the execution of the current 
- * instruction. The addressM and pc outputs are clocked: although they 
- * are affected by the execution of the current instruction, they commit 
+ * ins. The addressM and pc outputs are clocked: although they 
+ * are affected by the execution of the current ins, they commit 
  * to their new values only in the next time step. If reset==1 then the 
  * CPU jumps to address 0 (i.e. pc is set to 0 in next time step) rather 
- * than to the address resulting from executing the current instruction. 
+ * than to the address resulting from executing the current ins. 
  */
 
 CHIP CPU {
 
     IN  inM[16],         // M value input  (M = contents of RAM[A])
-        instruction[16], // Instruction for execution
+        ins[16], // Ins for execution
         reset;           // Signals whether to re-start the current
                          // program (reset==1) or continue executing
                          // the current program (reset==0).
@@ -36,8 +36,47 @@ CHIP CPU {
     OUT outM[16],        // M value output
         writeM,          // Write to M? 
         addressM[15],    // Address in data memory (of M)
-        pc[15];          // address of next instruction
+        pc[15];          // address of next ins
 
     PARTS:
-    // Put your code here:
+
+			// making input flags
+      Or(a = ins[15], b = false, out = isCIns); 
+      Not(in = ins[15], out = isAIns);
+
+      And(a = isCIns, b = ins[5], out = isCWriteA);
+      Or(a = isAIns, b = isCWriteA, out = loadA);
+
+			// Control AReg
+      Mux16(a = ins, b = outALU, sel = isCWriteA, out = inAReg); // switch between input and alu
+      ARegister(in = inAReg, load = loadA, out = outAreg, out[0..14] = addressM);
+
+			// Control DReg
+      And(a = isCIns, b = ins[4], out = loadD);
+      DRegister(in = outALU, load = loadD, out = outDReg);
+
+			// switch between AReg and MReg
+      Mux16(a = outAreg, b = inM, sel = ins[12], out = outAorM); 
+
+			// actual alu
+      ALU(x = outDReg, y = outAorM, 
+					zx = ins[11], nx = ins[10], zy = ins[9], ny = ins[8], f = ins[7], no = ins[6],
+          out = outALU, out = outM, zr = isZeroOut, ng = isNegOut);
+
+      // Set out flags and PC
+      Not(in = isNegOut, out = isNonNeg);
+      Not(in = isZeroOut, out = isNonZero);
+      And(a = isNonNeg, b = isNonZero, out = isPositive); // != 0 and > 0
+
+      And(a = isCIns, b = ins[3], out = writeM);  // write M? isCIns && dest==M
+
+      And(a = isPositive, b = ins[0], out = JGT);
+      And(a = isZeroOut, b = ins[1], out = JEQ);
+      And(a = isNegOut, b = ins[2], out = JLT);
+
+      Or(a = JEQ, b = JLT, out = JLE);
+      Or(a = JLE, b = JGT, out = jumpToA);                  
+      And(a = isCIns, b = jumpToA, out = loadPC);
+      Not(in = loadPC, out = PCinc);
+      PC(in = outAreg, inc = PCinc, load = loadPC, reset = reset, out[0..14 ]= pc);
 }
