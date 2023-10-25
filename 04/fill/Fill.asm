@@ -16,8 +16,15 @@
   D=A
   @max_screen
   M=D
+  @SCREEN
+  D=M
+  @x
+  M=D
   @color
   M=0
+  @LOOP
+  0;JMP
+
 (LOOP)
   @KBD
   D=M
@@ -29,49 +36,46 @@
   0;JMP
 
 (WHITE)
-  // n is a pointer
-  // reset n
-  @n
+  @color
   M=0
-  (WLOOP)
-    // move to correct address
-    @n
-    D=M
-    @SCREEN
-    A=D+M
-    // set to white
-    M=-1
-    // increment n
-    @n
-    M=M+1
-    // repeat?
-    D=M
-    @max_screen
-    D=M-D
-    @WLOOP
-    D;JLT
-    @LOOP
-    0;JMP
+  @SET
+  0;JMP
 
 (BLACK)
-  @n
-  M=0
-  (BLOOP)
-    // select address
-    @n
-    D=M
-    @SCREEN
-    A=D+M
-    // set to black
-    M=0
-    // increment n 
-    @n 
-    M=M+1
-    // repeat?
-    D=M
-    @max_screen
-    D=M-D
-    @BLOOP
-    D;JLT
-    @LOOP
-    0;JMP
+  @color
+  M=-1
+  @SET
+  0;JMP
+
+(SET)
+  // get color
+  @color
+  D=M
+
+  // move to x
+  @x
+  A=M
+  // set color
+  M=D
+
+  // increment x
+  @x
+  M=M+1
+  // check if x == max_screen
+  D=M
+  @max_screen
+  D=D-M
+  // stay in SET if !=
+  @SET
+  D;JLT
+  // else reset x and go back to LOOP
+  @screen
+  D=M
+  @x
+  M=D
+  @LOOP
+  0;JMP
+
+
+
+
