@@ -2,7 +2,7 @@
 
 using namespace std;
 
-string Code:: convert(const map<string, string> &m, const string s) const {
+string Code:: convert(const map<string, string> &m, const string &s) const {
   auto it = m.find(s);
   if (it != m.end()) {
     return it->second;
@@ -13,15 +13,15 @@ string Code:: convert(const map<string, string> &m, const string s) const {
 }
 
 string Code:: dest(const string &s) const {
-  convert(map_dest, s);
+  return convert(map_dest, s);
 }
 
 string Code:: comp(const string &s) const {
-  convert(map_comp, s);
+  return convert(map_comp, s);
 }
 
 string Code:: jump(const string &s) const {
-  convert(map_jump, s);
+  return convert(map_jump, s);
 }
 
 Code:: Code() {
