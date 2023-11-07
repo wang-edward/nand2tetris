@@ -1,4 +1,5 @@
 #include "parser.hh"
+#include <regex>
 #include <assert.h>
 
 using namespace std;
@@ -20,6 +21,11 @@ void Parser:: advance() {
 			getline(file, temp);
 		}
 	}
+
+	// remove whitespace
+	regex space_regex{"\\s+"};	
+	temp = regex_replace(temp, space_regex, "");
+	
 	// get rid of comments
 	string ans;
 	for (char c : temp) {
@@ -32,9 +38,6 @@ void Parser:: advance() {
 	curr_line = ans;
 	type = parseInstruction(curr_line);
   updateC();
-  cout << "curr_dest: " << curr_dest << endl;
-  cout << "curr_comp: " << curr_comp << endl;
-  cout << "curr_jump: " << curr_jump << endl;
 }
 
 InstructionType Parser:: parseInstruction(const string &s) const {
@@ -62,32 +65,15 @@ string Parser:: symbol() const {
 }
 
 string Parser:: dest() const {
-  // cout << "curr_dest: " << curr_dest << endl;
   return convert(im.dest, curr_dest);
 }
 
 
 string Parser:: comp() const {
-
-  for (auto x : im.comp) {
-    cout << "[" << x.first << ", " << x.second << "]" << endl;
-  }
-
-  cout << "_-------------------------" << endl;
-
-  cout << "curr_comp: [" << curr_comp  << "]"<< endl;
-  auto it = im.comp.find(curr_comp);
-  if (it != im.comp.end()) {
-    return it->second;
-  } else {
-    cerr << "NOT FOUND" << endl;
-    exit(123);
-  }
-  // return convert(im.comp, curr_comp);
+  return convert(im.comp, curr_comp);
 }
 
 string Parser:: jump() const {
-  // cout << "curr_jump: " << curr_jump << endl;
   return convert(im.jump, curr_jump);
 }
 
@@ -99,18 +85,18 @@ void Parser:: updateC() {
   curr_jump = "";
 
   if (pos_eq == string::npos && pos_sc == string::npos) {
-    cout << "!eq, !sc" << endl;
+    // cout << "!eq, !sc" << endl;
     curr_comp = curr_line;
   } else if (pos_eq == string::npos){
-    cout << "!eq" << endl;
+    // cout << "!eq" << endl;
     curr_comp = curr_line.substr(0, pos_sc);
     curr_jump = curr_line.substr(pos_sc + 1);
   } else if (pos_sc == string::npos) {
-    cout << "!sc" << endl;
+    // cout << "!sc" << endl;
     curr_dest = curr_line.substr(0, pos_eq);
     curr_comp = curr_line.substr(pos_eq + 1);
   } else {
-    cout << "none" << endl;
+    // cout << "none" << endl;
     curr_dest = curr_line.substr(0, pos_eq);
     curr_comp = curr_line.substr(pos_eq + 1, pos_sc - 2);
     curr_jump = curr_line.substr(pos_sc + 1);
@@ -150,11 +136,11 @@ InstructionMapping:: InstructionMapping() {
   dest.insert({"null", "000"});
   dest.insert({"M",   "001"});
   dest.insert({"D",   "010"});
-  dest.insert({"DM",  "011"});
+  dest.insert({"MD",  "011"}); // in the book it's DM ?
   dest.insert({"A",   "100"});
   dest.insert({"AM",  "101"});
   dest.insert({"AD",  "110"});
-  dest.insert({"ADM", "111"});
+  dest.insert({"AMD", "111"}); // in the book its ADM?
 
   // comp, a = 0
   comp.insert({"", ""}); // empty case

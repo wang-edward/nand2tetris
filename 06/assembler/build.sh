@@ -1,2 +1,2 @@
  #!/usr/bin/bash 
-g++ -std=c++20 parser.cc main.cc
+g++ -std=c++20 -g parser.cc main.cc
