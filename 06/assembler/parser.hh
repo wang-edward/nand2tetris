@@ -11,23 +11,13 @@ enum InstructionType {
 	L_INSTRUCTION
 };
 
-struct InstructionMapping {
-  map<string, string> dest;
-  map<string, string> comp;
-  map<string, string> jump;
-public:
-  explicit InstructionMapping();
-};
-
 class Parser {
 // private:
 public:
-  InstructionMapping im;
 	ifstream file;
 	string curr_line;
   string curr_dest, curr_comp, curr_jump;
 	InstructionType type;
-  string convert(const map<string, string> &m, string s) const;
   void updateC();
 	
  //public:
