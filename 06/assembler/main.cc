@@ -24,12 +24,12 @@ int main(int argc, char **argv) {
 		p.advance();
     switch (p.instructionType()) {
       case C_INSTRUCTION:
-        fout << "111" << c.dest(p.dest()) << c.comp(p.comp()) << c.jump(p.jump()) << endl;
+        fout << "111" << c.dest(p.dest()) << c.comp(p.comp()) << c.jump(p.jump()) << " C_INSTRUCTION" << endl;
         break;
       case A_INSTRUCTION:
         int numeral = stoi(p.symbol());
         string binary = std::bitset<16>(numeral).to_string(); //to binary
-        fout << binary << endl;
+        fout << binary << " A_INSTRUCTION" << endl;
         break;
     }
 	}
