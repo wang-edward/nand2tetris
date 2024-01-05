@@ -1,11 +1,8 @@
 #include "parser.hh"
 #include <regex>
-#include <assert.h>
 
-using namespace std;
-
-Parser:: Parser(string filename) {
-	file = ifstream{filename};
+Parser:: Parser(std::string filename) {
+	file = std::ifstream{filename};
 }
 
 bool Parser:: hasMoreLines() {
@@ -13,34 +10,27 @@ bool Parser:: hasMoreLines() {
 }
 
 void Parser:: advance() {
-	// skip newlines
-	string temp;
-	if (hasMoreLines()) {
-		getline(file, temp);
-		while ((temp == "" || (temp[0] == '/')) && hasMoreLines()) {
-			getline(file, temp);
-		}
-	}
+	std::string temp;
+    getline(file, temp);
 
-	// remove whitespace
-	regex space_regex{"\\s+"};	
-	temp = regex_replace(temp, space_regex, "");
-	
-	// get rid of comments
-	string ans;
-	for (char c : temp) {
-		if (c == '/') {
-			break;
-		} else {
-			ans += c;
-		}
-	}
-	curr_line = ans;
+    // remove spaces
+    temp = regex_replace(temp, space_regex, "");
+    // remove comments (if they exist)
+    size_t comment_index = temp.find("//");
+    if (comment_index != std::string::npos) {
+        temp = temp.substr(0, comment_index);
+    }
+
+    if (temp.empty() && hasMoreLines()) {
+        advance();
+    }
+
+	curr_line = temp;
 	type = parseInstruction(curr_line);
-  updateC();
+    updateC();
 }
 
-InstructionType Parser:: parseInstruction(const string &s) const {
+InstructionType Parser:: parseInstruction(const std::string &s) const {
 	if (s[0] == '@') {
 		return InstructionType::A_INSTRUCTION;
 	} else if ((curr_line[0] == '(') &&
@@ -55,7 +45,7 @@ InstructionType Parser:: instructionType() const {
 	return type;
 }
 
-string Parser:: symbol() const {
+std::string Parser:: symbol() const {
   assert(type == A_INSTRUCTION || type == L_INSTRUCTION);
   if (type == A_INSTRUCTION) {
     return curr_line.substr(1);
@@ -64,16 +54,16 @@ string Parser:: symbol() const {
   }
 }
 
-string Parser:: dest() const {
+std::string Parser:: dest() const {
   return curr_dest;
 }
 
 
-string Parser:: comp() const {
+std::string Parser:: comp() const {
   return curr_comp;
 }
 
-string Parser:: jump() const {
+std::string Parser:: jump() const {
   return curr_jump;
 }
 
@@ -84,26 +74,22 @@ void Parser:: updateC() {
   curr_dest = "";
   curr_jump = "";
 
-  if (pos_eq == string::npos && pos_sc == string::npos) {
-    // cout << "!eq, !sc" << endl;
+  if (pos_eq == std::string::npos && pos_sc == std::string::npos) {
     curr_comp = curr_line;
-  } else if (pos_eq == string::npos){
-    // cout << "!eq" << endl;
+  } else if (pos_eq == std::string::npos){
     curr_comp = curr_line.substr(0, pos_sc);
     curr_jump = curr_line.substr(pos_sc + 1);
-  } else if (pos_sc == string::npos) {
-    // cout << "!sc" << endl;
+  } else if (pos_sc == std::string::npos) {
     curr_dest = curr_line.substr(0, pos_eq);
     curr_comp = curr_line.substr(pos_eq + 1);
   } else {
-    // cout << "none" << endl;
     curr_dest = curr_line.substr(0, pos_eq);
     curr_comp = curr_line.substr(pos_eq + 1, pos_sc - 2);
     curr_jump = curr_line.substr(pos_sc + 1);
   }
 }
 
-ostream &operator<<(ostream &out, InstructionType it) {
+std::ostream &operator<<(std::ostream &out, InstructionType it) {
 	switch (it) {
 		case C_INSTRUCTION:
 			out << "C_INSTRUCTION";

@@ -7,8 +7,7 @@ string Code:: convert(const map<string, string> &m, const string &s) const {
   if (it != m.end()) {
     return it->second;
   } else {
-    cerr << "invalid command: " << s << endl;
-    exit(123);
+    throw std::runtime_error{"invalid command: " + s};
   }
 }
 
@@ -80,5 +79,3 @@ Code:: Code() {
   map_jump.insert({"JLE", "110"});
   map_jump.insert({"JMP", "111"});
 }
-
-

@@ -2,8 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
-using namespace std;
+#include <regex>
 
 enum InstructionType {
 	C_INSTRUCTION,
@@ -14,22 +13,23 @@ enum InstructionType {
 class Parser {
 // private:
 public:
-	ifstream file;
-	string curr_line;
-  string curr_dest, curr_comp, curr_jump;
+    std::ifstream file;
+	std::string curr_line;
+    std::regex space_regex{"\\s+"};	
+    std::string curr_dest, curr_comp, curr_jump;
 	InstructionType type;
-  void updateC();
+    void updateC();
 	
  //public:
-	Parser(string filename);
+	Parser(std::string filename);
 	bool hasMoreLines();
 	void advance();
-	InstructionType parseInstruction(const string &s) const;
+	InstructionType parseInstruction(const std::string &s) const;
 	InstructionType instructionType() const;
-	string symbol() const;
-	string dest() const;
-	string comp() const;
-	string jump() const;
+	std::string symbol() const;
+	std::string dest() const;
+	std::string comp() const;
+	std::string jump() const;
 };
 
-ostream &operator<<(ostream &out, InstructionType it);
+std::ostream &operator<<(std::ostream &out, InstructionType it);

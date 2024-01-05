@@ -11,28 +11,28 @@ string generate_filepath(const string &s) {
 }
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
-    cout << "1 argument lil bro" << endl;
-    exit(1);
-  }
-
-	Parser p{argv[1]};
-  Code c;
-  ofstream fout{generate_filepath(argv[1])};
-
-	while (p.hasMoreLines()) {
-		p.advance();
-    switch (p.instructionType()) {
-      case C_INSTRUCTION:
-        fout << "111" << c.dest(p.dest()) << c.comp(p.comp()) << c.jump(p.jump()) << " C_INSTRUCTION" << endl;
-        break;
-      case A_INSTRUCTION:
-        int numeral = stoi(p.symbol());
-        string binary = std::bitset<16>(numeral).to_string(); //to binary
-        fout << binary << " A_INSTRUCTION" << endl;
-        break;
+    if (argc != 2) {
+        cerr << "takes 1 argument: filename." << endl;
+        exit(1);
     }
-	}
+
+    Parser p{argv[1]};
+    Code c;
+    ofstream fout{generate_filepath(argv[1])};
+
+    while (p.hasMoreLines()) {
+        p.advance();
+        switch (p.instructionType()) {
+            case C_INSTRUCTION:
+                fout << "111" << c.dest(p.dest()) << c.comp(p.comp()) << c.jump(p.jump()) << " C_INSTRUCTION" << endl;
+            break;
+            case A_INSTRUCTION:
+                int numeral = stoi(p.symbol());
+                string binary = std::bitset<16>(numeral).to_string(); //to binary
+                fout << binary << " A_INSTRUCTION" << endl;
+            break;
+        }
+    }
   fout.close();
 }
 
