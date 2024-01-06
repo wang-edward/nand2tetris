@@ -4,11 +4,9 @@
 using namespace std;
 
 int main() {
-    fstream fin{"words.txt"};
-    string x;
-    while (getline(fin, x)) {
-        cout << "{" << x << "}";
-        if (x.empty()) cout << " empty";
-        cout << endl;
-    }
+    uint8_t num = 0b11111111;
+    cout << unsigned(num) << endl;
+    num++;
+    cout << unsigned(num) << endl;
+    cout << "YO" <<endl;
 }
