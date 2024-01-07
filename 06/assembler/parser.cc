@@ -145,8 +145,8 @@ void Parser:: parse(std::ofstream &fout, const Code &code) {
         switch (instructionType()) {
             case InstructionType::C_INSTRUCTION:
                 fout << "111"; // indicate C instruction
-                fout << code.convertDest(getDest());
                 fout << code.convertComp(getComp());
+                fout << code.convertDest(getDest());
                 fout << code.convertJump(getJump()) << std::endl;
                 break;
             case InstructionType::A_INSTRUCTION: {
@@ -155,7 +155,7 @@ void Parser:: parse(std::ofstream &fout, const Code &code) {
 
                 uint16_t numeral = -1;
                 if (isNumeric(label)) {
-                    int numeral = stoi(label);
+                    numeral = stoi(label);
                 } else {
                     if (lut.find(label) == lut.end()) {
                         lut[label] = curr_address;
