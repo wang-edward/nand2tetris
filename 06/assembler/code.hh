@@ -1,18 +1,20 @@
-#include <map>
+#pragma once
+#include <unordered_map>
 #include <string>
-#include <iostream>
-
-using namespace std;
+#include <stdexcept>
 
 class Code {
 private:
-  map<string, string> map_dest;
-  map<string, string> map_comp;
-  map<string, string> map_jump;
-  string convert(const map<string, string> &m, const string &s) const;
+    std::unordered_map<std::string, std::string> map_dest;
+    std::unordered_map<std::string, std::string> map_comp;
+    std::unordered_map<std::string, std::string> map_jump;
+    
 public:
-  explicit Code();
-  string dest(const string &s) const;
-  string comp(const string &s) const;
-  string jump(const string &s) const;
+    explicit Code();
+    std::string convertDest(const std::string &s) const;
+    std::string convertComp(const std::string &s) const;
+    std::string convertJump(const std::string &s) const;
+
 };
+
+std::string convert(const std::unordered_map<std::string, std::string> &m, const std::string &s);
