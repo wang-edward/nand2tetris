@@ -33,8 +33,10 @@ M = M + 1 // ram[SP] = ram[SP]
 ```
 
 pop segment index
+- pop the top stack value and store in segment[index]
 
 add
+- pop top 2 and add them
 sub
 neg
 
