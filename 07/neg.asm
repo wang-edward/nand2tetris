@@ -23,7 +23,7 @@ M = D
 @SP
 M = M + 1
 
-// sub
+// neg
 // -----------------------------
 
 // collect first pop
@@ -32,15 +32,9 @@ M = M - 1
 A = M
 D = M
 
-// accumulate second pop
-@SP
-M = M - 1
-A = M
-D = M - D
-
-// push sum to stack
+// push num to stack and negate
 @SP
 A = M
-M = D
+M = -D
 @SP
 M = M + 1
