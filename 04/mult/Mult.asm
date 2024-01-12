@@ -18,11 +18,11 @@
 (LOOP)
   // check if done
   @R1
-  D=M
+  D=M // D = R1
   @i
-  D=M-D
-  @STOP
-  D;JGE
+  D=M-D // D = i - R1 
+  @END
+  D;JGE // 
   // load R0
   @R0
   D=M
@@ -38,3 +38,47 @@
 (END)
   @END
   0;JMP
+
+// https://github.com/Olical/nand2tetris/blob/master/asm/mult/Mult.asm
+
+// Start R2 at 0.
+@R2
+M=0 // R2 = 0
+
+// Jump into the first STEP if R0 > 0.
+@R0 
+D=M // D = R0
+@STEP
+D;JGT // step if R0 > 0
+
+// If it didn't jump, go to END.
+@END
+0;JMP
+
+// Adds R1 to R2 and removes 1 from R0.
+// If R0 is more than 0 we step again.
+(STEP)
+    // Get R2.
+    @R2
+    D=M
+
+    // Add R1 to it.
+    @R1
+    D=D+M
+
+    // And write the result back to R2.
+    @R2
+    M=D
+
+    // Reduce R0 by 1.
+    @R0
+    D=M-1
+    M=D
+
+    // If R0 is still > 0 then loop.
+    @STEP
+    D;JGT
+
+(END)
+    @END
+    0;JMP
