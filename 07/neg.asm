@@ -30,11 +30,11 @@ M = M + 1
 @SP
 M = M - 1
 A = M
-D = M
+D = -M // NEG
 
 // push num to stack and negate
 @SP
 A = M
-M = -D
+M = D
 @SP
 M = M + 1

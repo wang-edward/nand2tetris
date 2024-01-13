@@ -7,7 +7,7 @@ D = A
 M = D
 
 // push 2 and 5 to stack
-@2
+@3
 D = A
 @SP
 A = M
@@ -23,7 +23,7 @@ M = D
 @SP
 M = M + 1
 
-// add
+// not
 // -----------------------------
 
 // collect first pop
@@ -32,13 +32,9 @@ M = M - 1
 A = M
 D = M
 
-// accumulate second pop
-@SP
-M = M - 1
-A = M
-D = D + M // ADD
+D = !D // NOT
 
-// push sum to stack
+// push result to stack
 @SP
 A = M
 M = D

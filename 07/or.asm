@@ -7,7 +7,7 @@ D = A
 M = D
 
 // push 2 and 5 to stack
-@2
+@3
 D = A
 @SP
 A = M
@@ -23,7 +23,7 @@ M = D
 @SP
 M = M + 1
 
-// add
+// or
 // -----------------------------
 
 // collect first pop
@@ -36,9 +36,9 @@ D = M
 @SP
 M = M - 1
 A = M
-D = D + M // ADD
+D = D | M // OR
 
-// push sum to stack
+// push result to stack
 @SP
 A = M
 M = D

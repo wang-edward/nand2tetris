@@ -23,7 +23,7 @@ M = D
 @SP
 M = M + 1
 
-// add
+// eq
 // -----------------------------
 
 // collect first pop
@@ -54,7 +54,7 @@ D = 0
 
 (SYS_WRITE$)
 
-// push sum to stack
+// push result to stack
 @SP
 A = M
 M = D
