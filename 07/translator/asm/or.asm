@@ -7,7 +7,7 @@
     @SP
     M = M - 1
     A = M
-    D = D | M // OR
+    D = D | M 
 
     @SP
     A = M

@@ -7,7 +7,7 @@
     @SP
     M = M - 1
     A = M
-    D = M - D // SUB
+    D = M - D
 
     @SP
     A = M

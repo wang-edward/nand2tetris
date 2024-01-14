@@ -490,7 +490,7 @@
     @SP
     M = M - 1
     A = M
-    D = D + M // ADD
+    D = D + M
 
     @SP
     A = M
@@ -516,7 +516,7 @@
     @SP
     M = M - 1
     A = M
-    D = M - D // SUB
+    D = M - D
 
     @SP
     A = M
@@ -528,14 +528,14 @@
     @SP
     M = M - 1
     A = M
-    D = -M // NEG
+    D = -M
 
     @SP
     A = M
     M = D
     @SP
     M = M + 1
-}
+// }
 // and {
     @SP
     M = M - 1
@@ -545,7 +545,7 @@
     @SP
     M = M - 1
     A = M
-    D = D & M // AND
+    D = D & M
 
     @SP
     A = M
@@ -571,7 +571,7 @@
     @SP
     M = M - 1
     A = M
-    D = D | M // OR
+    D = D | M 
 
     @SP
     A = M
@@ -583,7 +583,7 @@
     @SP
     M = M - 1
     A = M
-    D = !M // NOT
+    D = !M
 
     @SP
     A = M
