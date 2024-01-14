@@ -1,46 +1,17 @@
-// test
-// -----------------------------
-// set SP to 256
-@256
-D = A
-@SP
-M = D
+// and {
+    @SP
+    M = M - 1
+    A = M
+    D = M
 
-// push 2 and 5 to stack
-@3
-D = A
-@SP
-A = M
-M = D
-@SP
-M = M + 1
+    @SP
+    M = M - 1
+    A = M
+    D = D & M // AND
 
-@5
-D = A
-@SP
-A = M
-M = D
-@SP
-M = M + 1
-
-// and
-// -----------------------------
-
-// collect first pop
-@SP
-M = M - 1
-A = M
-D = M
-
-// accumulate second pop
-@SP
-M = M - 1
-A = M
-D = D & M // AND
-
-// push result to stack
-@SP
-A = M
-M = D
-@SP
-M = M + 1
+    @SP
+    A = M
+    M = D
+    @SP
+    M = M + 1
+// }
