@@ -22,9 +22,9 @@ M = D
 
 // SP--
 @SP
-M = M - 1
-// x = ram[SP]
+M = M - 1 // x = ram[SP]
+
 A = M
 D = M
-@segment.i
+@{segment}.{index}
 M = D

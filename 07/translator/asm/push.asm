@@ -21,11 +21,8 @@ M = D
 // -----------------------------
 
 // move to segment + index
-@3
-D = A
-@LCL
-A = D + M
-D = M // D = ram[segment + index]
+@{segment}.{index}
+D = M // D = ram[segment.index]
 @SP
 A = M // equivalent to @M
 M = D // ram[SP] = ram[segment + index]
