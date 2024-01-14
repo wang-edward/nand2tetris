@@ -11,6 +11,9 @@ Translator:: Translator(std::string input_filename, std::string output_filename,
     std::regex space_regex{"\\S+"};
     std::regex segment_regex{"\\{segment\\}"};
     std::regex index_regex{"\\{index\\}"};
+    std::regex count_regex{"\\$"};
+
+    int count = 0;
 
     while (getline(input_file, temp)) {
         std::list tokens = regexSplit(temp, space_regex);
@@ -24,10 +27,13 @@ Translator:: Translator(std::string input_filename, std::string output_filename,
                 assembly = codes["constant"];
             }
             PushPop config{tokens.front(), tokens.back()};
-            assembly = replaceConfig(config, assembly, segment_regex, index_regex);
+            assembly = std::regex_replace(assembly, segment_regex, config.segment);
+            assembly = std::regex_replace(assembly, index_regex, config.index);
+            assembly = std::regex_replace(assembly, count_regex, std::to_string(count));
         }
         output_file << assembly;
         std::cout << assembly << std::endl;
+        count++;
     }
 }
 
@@ -35,13 +41,7 @@ Translator:: ~Translator() {
     output_file.close();
 }
 
-std::string replaceConfig(const PushPop &config, const std::string &assembly, const std::regex &segment_regex, const std::regex &index_regex) {
-    std::string result =  std::regex_replace(assembly, segment_regex, config.segment);
-    result = std::regex_replace(result, index_regex, config.index);
-    return result;
-}
-
-std::list<std::string> regexSplit(const std::string &temp, std::regex &space_regex) {
+std::list<std::string> regexSplit(const std::string &temp, const std::regex &space_regex) {
     std::sregex_iterator regex_it(temp.begin(), temp.end(), space_regex);
     std::sregex_iterator end_it;
     std::list<std::string> result;

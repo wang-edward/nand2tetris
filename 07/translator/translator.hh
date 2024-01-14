@@ -20,6 +20,5 @@ public:
     ~Translator();
 };
 
-std::string replaceConfig(const PushPop &config, const std::string &assembly, const std::regex &segment_regex, const std::regex &index_regex);
-std::list<std::string> regexSplit(const std::string &temp, std::regex &space_regex);
+std::list<std::string> regexSplit(const std::string &temp, const std::regex &space_regex);
 void generateMap(std::map<std::string, std::string> &codes, std::string directory_path);
