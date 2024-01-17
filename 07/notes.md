@@ -50,6 +50,7 @@ D = M // D = ram[SP]
 ```
 
 add
+- pop top 2 and add them
 sub
 neg
 
