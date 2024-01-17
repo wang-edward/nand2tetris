@@ -20,19 +20,34 @@ push segment index
     - write to SP
 ```
 // move to segment + index
-@index
+@3
 D = A
-@segment
-A = D + A
+@LCL
+A = D + M
 D = M // D = ram[segment + index]
+
+// write to ram[SP]
 @SP
-M = D // ram[SP] = ram[segment + index]
 A = M // equivalent to @M
-@SP   // 
+M = D // ram[SP] = ram[segment + index]
+ 
+// ++
+@SP  
 M = M + 1 // ram[SP] = ram[SP]
 ```
 
 pop segment index
+- pops the top of the stack
+- stores it in segment[index]
+
+```
+// move to stack pointer
+@SP
+A = M // 
+D = M // D = ram[SP]
+
+
+```
 
 add
 sub
